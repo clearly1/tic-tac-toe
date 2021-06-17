@@ -75,20 +75,15 @@ function Field() {
     }, [countStepsInGame]);
 
     useEffect(() => {
-        let rndInt = null;
         if (options.mode !== 'PvP' && gameResult === null && countStepsInGame > 0) {
             if (options.firstStep === 'Player' || options.mode === 'CvC') {
                 if (!isNextCrossStep) {
                     //computer step in CvC or PvC mode
                     setTimeout(() => {
                         if (options.format === '50x50') {
-                            rndInt = Math.floor(Math.random() * (freeCellsForComputerIn50x50.length - 1));
-                            step('o', freeCellsForComputerIn50x50[rndInt][0], freeCellsForComputerIn50x50[rndInt][1]);
-                            checkGameStatus('o', freeCellsForComputerIn50x50[rndInt][0], freeCellsForComputerIn50x50[rndInt][1]);
+                            makeComputerStep(freeCellsForComputerIn50x50,'o');
                         } else {
-                            rndInt = Math.floor(Math.random() * (freeCellsForComputerIn3x3.length - 1));
-                            step('o', freeCellsForComputerIn3x3[rndInt][0], freeCellsForComputerIn3x3[rndInt][1]);
-                            checkGameStatus('o', freeCellsForComputerIn3x3[rndInt][0], freeCellsForComputerIn3x3[rndInt][1]);
+                            makeComputerStep(freeCellsForComputerIn3x3,'o');
                         }
                     }, 1000);
                 } else if (options.mode === 'CvC') {
@@ -96,19 +91,12 @@ function Field() {
                     setTimeout(() => {
                         if (options.format === '50x50') {
                             if (countStepsInGame === 2500) {
-                                let i = Math.floor(Math.random() * 49);
-                                let j = Math.floor(Math.random() * 49);
-                                step('x', i, j);
-                                checkGameStatus('x', i, j);
+                                makeFirstComputerStepIn50x50('x');
                             } else {
-                                rndInt = Math.floor(Math.random() * (freeCellsForComputerIn50x50.length - 1));
-                                step('x', freeCellsForComputerIn50x50[rndInt][0], freeCellsForComputerIn50x50[rndInt][1]);
-                                checkGameStatus('x', freeCellsForComputerIn50x50[rndInt][0], freeCellsForComputerIn50x50[rndInt][1]);
+                                makeComputerStep(freeCellsForComputerIn50x50,'x');
                             }
                         } else {
-                            rndInt = Math.floor(Math.random() * (freeCellsForComputerIn3x3.length - 1));
-                            step('x', freeCellsForComputerIn3x3[rndInt][0], freeCellsForComputerIn3x3[rndInt][1]);
-                            checkGameStatus('x', freeCellsForComputerIn3x3[rndInt][0], freeCellsForComputerIn3x3[rndInt][1]);
+                            makeComputerStep(freeCellsForComputerIn3x3,'x');
                         }
                     }, 1000);
                 }
@@ -118,19 +106,12 @@ function Field() {
                     setTimeout(() => {
                         if (options.format === '50x50') {
                             if (countStepsInGame === 2500) {
-                                let i = Math.floor(Math.random() * 49);
-                                let j = Math.floor(Math.random() * 49);
-                                step('x', i, j);
-                                checkGameStatus('x', i, j);
+                                makeFirstComputerStepIn50x50('x');
                             } else {
-                                rndInt = Math.floor(Math.random() * (freeCellsForComputerIn50x50.length - 1));
-                                step('x', freeCellsForComputerIn50x50[rndInt][0], freeCellsForComputerIn50x50[rndInt][1]);
-                                checkGameStatus('x', freeCellsForComputerIn50x50[rndInt][0], freeCellsForComputerIn50x50[rndInt][1]);
+                                makeComputerStep(freeCellsForComputerIn50x50,'x');
                             }
                         } else {
-                            rndInt = Math.floor(Math.random() * (freeCellsForComputerIn3x3.length - 1));
-                            step('x', freeCellsForComputerIn3x3[rndInt][0], freeCellsForComputerIn3x3[rndInt][1]);
-                            checkGameStatus('x', freeCellsForComputerIn3x3[rndInt][0], freeCellsForComputerIn3x3[rndInt][1]);
+                            makeComputerStep(freeCellsForComputerIn3x3,'x');
                         }
                     }, 1000);
                 }
@@ -138,6 +119,18 @@ function Field() {
 
         }
     }, [countStepsInGame]);
+
+    const makeComputerStep = (freeCells, stepItem) => {
+        let rndInt = Math.floor(Math.random() * (freeCells.length - 1));
+        step(stepItem, freeCells[rndInt][0], freeCells[rndInt][1]);
+        checkGameStatus(stepItem, freeCells[rndInt][0], freeCells[rndInt][1]);
+    };
+    const makeFirstComputerStepIn50x50 = (stepItem) => {
+        let i = Math.floor(Math.random() * 49);
+        let j = Math.floor(Math.random() * 49);
+        step(stepItem, i, j);
+        checkGameStatus(stepItem, i, j);
+    };
 
     const step = (whoseStep, firstIndex, secondIndex) => {
 
